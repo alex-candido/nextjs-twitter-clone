@@ -19,8 +19,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         className="
           relative
           rounded-full
-          h-14
-          w-14
+          h-5
+          w-5
           flex
           items-center
           justify-center
@@ -31,7 +31,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           lg:hidden
         "           
       >
-        <Icon size={28} color="white"/>
+        <Icon size={20} color="white"/>
       </div>
       <div
         className="
@@ -47,7 +47,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           cursor-pointer
         "
       >
-        <Icon size={24} color="white"/>
+        <Icon size={20} color="white"/>
         <p className="hidden lg:block text-white text-xl">
           { label }
         </p>
