@@ -32,13 +32,12 @@ const RegisterModal = () => {
       // TODO ADD LOG IN
 
       registerModal.onClose();
-      loginModal.onOpen();
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(true);
     }
-  }, [loginModal, registerModal]);
+  }, [registerModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
