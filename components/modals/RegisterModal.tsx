@@ -14,8 +14,16 @@ const RegisterModal = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
-
   const [isLoading, setIsLoading] = useState(false);
+
+  const onToggle = useCallback(() => {
+    if (isLoading) {
+      return;
+    }
+
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [isLoading, loginModal, registerModal])
 
   const onSubmit = useCallback(async () => {
     try {
@@ -23,13 +31,14 @@ const RegisterModal = () => {
 
       // TODO ADD LOG IN
 
-      loginModal.onClose();
+      registerModal.onClose();
+      loginModal.onOpen();
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(true);
     }
-  }, [loginModal]);
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -60,15 +69,27 @@ const RegisterModal = () => {
     </div>
   )
 
+  const footerContent = (
+    <div className="text-neutral-400 text-center mt-4">
+      <p>Already have an account?</p>
+      <span 
+        onClick={onToggle}
+        className="text-white cursor-pointer hover:underline">
+        sing in
+      </span>
+    </div>
+  )
+
   return (
     <Modal
       disabled={isLoading}
       isOpen={registerModal.isOpen}
-      title="Login"       
-      actionLabel="Sign in"
+      title="Create an account"       
+      actionLabel="Register"
       onClose={registerModal.onClose}
       onSubmit={onSubmit}
       body={bodyContent}
+      footer={footerContent}
     />
   )
 }
