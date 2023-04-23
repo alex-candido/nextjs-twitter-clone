@@ -16,14 +16,14 @@ const LoginModal = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-    const onToggle = useCallback(() => {
-      if (isLoading) {
-        return;
-      }
+  const onToggle = useCallback(() => {
+    if (isLoading) {
+      return;
+    }
 
-      loginModal.onClose();
-      registerModal.onOpen();
-    }, [isLoading, loginModal, registerModal])
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [isLoading, loginModal, registerModal])
 
   const onSubmit = useCallback(async () => {
     try {
@@ -33,8 +33,6 @@ const LoginModal = () => {
         email,
         password,
       });
-
-      toast.success('Logged in');
 
       loginModal.onClose();
     } catch (error) {

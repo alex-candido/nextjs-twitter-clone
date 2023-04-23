@@ -8,32 +8,31 @@ import prisma from "@/libs/prismadb"
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    CredentialsProvider({
+     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        email: { lable: 'email', type: 'text'},
-        password: { label: 'password', type: 'password' },
+        email: { label: 'email', type: 'text' },
+        password: { label: 'password', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || credentials?.password) {
-          throw new Error("Invalid credentials");
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Invalid credentials');
         }
 
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email
           }
-        })
+        });
 
-        if (!user || !user.hashedPassword) {
-          throw new Error("Invalid credential");
-          
+        if (!user || !user?.hashedPassword) {
+          throw new Error('Invalid credentials');
         }
 
         const isCorrectPassword = await bcrypt.compare(
           credentials.password,
           user.hashedPassword
-        )
+        );
 
         if (!isCorrectPassword) {
           throw new Error('Invalid credentials');
