@@ -28,7 +28,6 @@ const FollowBar = () => {
                 </div>
               </div>
             ))}
-            teste
           </div>
         </div>
       </div>
