@@ -8,7 +8,6 @@ const FollowBar = () => {
   // if (users.length === 0) {
   //   return null;
   // }
-  console.log(users)
 
   return (
     <div className="px-6 py-4 hidden lg:block">

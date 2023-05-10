@@ -8,14 +8,14 @@ interface UserHeroProps {
 }
 
 const UserHero: React.FC<UserHeroProps> = ({ userId }) => {
-  const { data: fechedUser } = useUser(userId)
+  const { data: fetchedUser } = useUser(userId)
   return (
     <div>
       <div
         className="bg-neutral-700 h-44 relative"
       >          
-        {fechedUser?.coverImage && (
-          <Image src={fechedUser.coverImage} 
+        {fetchedUser?.coverImage && (
+          <Image src={fetchedUser.coverImage} 
             fill 
             alt="Cover Image"
             style={{ objectFit: 'cover' }}
