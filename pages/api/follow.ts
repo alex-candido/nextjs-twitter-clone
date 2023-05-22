@@ -9,7 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   
   try {
-    const { userId } = req.body;
+
+    const userId = req.method === 'POST' ? req.body.userId : req.query.userId;
 
     const { currentUser } = await serverAuth(req, res);
 
@@ -17,34 +18,56 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       throw new Error('Invalid ID');
     }
 
-    const user = await prisma.user.findUnique({
+    const userFollowing = await prisma.user.findUnique({
+      where: {
+        id: currentUser.id
+      }
+    });
+
+    const userFollower = await prisma.user.findUnique({
       where: {
         id: userId
       }
     });
 
-    let updatedFollwingIds = [...(user?.followingIds || [])];
+    let updatedFollowingIds = [...(userFollowing?.followingIds || [])];
+    let updatedFollowersIds = [...(userFollower?.followersIds|| [])];
 
     if (req.method === 'POST') {
-      updatedFollwingIds.push(userId)
+      updatedFollowingIds.push(userId)
+      updatedFollowersIds.push(currentUser.id)
     }
 
     if (req.method === 'DELETE') {
-      updatedFollwingIds = 
-      updatedFollwingIds
+      updatedFollowingIds = 
+      updatedFollowingIds
       .filter(followingId => followingId !== userId)
+
+      updatedFollowersIds = 
+      updatedFollowersIds
+      .filter(followersCount => followersCount !== currentUser.id)
+
     }
 
-    const updatedUser = await prisma.user.update({
+    const updatedUserFollowing = await prisma.user.update({
       where: {
         id: currentUser.id
       },
       data: {
-        followingIds: updatedFollwingIds
+        followingIds: updatedFollowingIds
       }
     });
 
-    return res.status(200).json(updatedUser);
+    const updatedUserFollowers = await prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        followersIds: updatedFollowersIds
+      }
+    });
+
+    return res.status(200).json({updatedUserFollowing, updatedUserFollowers});
   } catch (error) {
     console.log(error);
     return res.status(400).end();

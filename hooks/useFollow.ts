@@ -13,7 +13,7 @@ const useFollow = (userId: string) => {
   const loginModal = useLoginModal();
 
   const isFollowing = useMemo(() => {
-    const list = currentUser?.followingId || [];
+    const list = currentUser?.followingIds || [];
 
     return list.includes(userId);
   }, [currentUser, userId]);
@@ -27,14 +27,17 @@ const useFollow = (userId: string) => {
       let request;
 
       if (isFollowing) {
-        request = axios.delete('/api/follow', { data: { userId } });
+        request = () => axios.delete('/api/follow', { params: { userId } });
       } else {
-        request = axios.post('/api/follow', { userId });
+        request = () => axios.post('/api/follow', { userId });
       }
 
+      console.log((await request()).data)
       await request;
       mutateCurrentUser();
       mutateFetchedUser();
+
+      toast.success('Success');
     } catch (error) {
       toast.error('Something went wrong');
     }
