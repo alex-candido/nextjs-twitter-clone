@@ -4,8 +4,8 @@ import { useCallback, useMemo } from 'react';
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
 
 import useCurrentUser from '@/hooks/useCurrentUser';
+import useLike from '@/hooks/useLike';
 import useLoginModal from '@/hooks/useLoginModal';
-// import useLike from '@/hooks/useLike';
 
 import Avatar from '../Avatar';
 
@@ -19,6 +19,7 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
   const loginModal = useLoginModal();
 
   const { data: currentUser } = useCurrentUser();
+  const { hasLiked, toggleLike } = useLike({ postId: data.id, userId});
 
   const goToUser = useCallback((event: any) => {
     event.stopPropagation();
@@ -33,8 +34,12 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
   const onLike = useCallback( async (event: any) => {
     event.stopPropagation();
 
-    loginModal.onOpen();
-  }, [loginModal])
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+
+    toggleLike();
+  }, [loginModal, currentUser, toggleLike]);
 
   const LikeIcon = "hasLiked" ? AiFillHeart : AiOutlineHeart;
 
@@ -93,9 +98,9 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
               onClick={onLike}
               className="flex flex-row items-center text-neutral-500 gap-2 cursor-pointer transition hover:text-red-500"
             >
-              <AiOutlineHeart size={20} />
+              <LikeIcon color={hasLiked ? 'red' : ''} size={20} />
               <p>
-                {data.comments?.length || 0}
+                {data.likedIds?.length || 0}
               </p>
             </div>
           </div>
