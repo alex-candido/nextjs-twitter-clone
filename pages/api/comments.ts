@@ -9,18 +9,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const postId = req.method === 'POST' ? req.body.postId : req.query.postId;
     const { currentUser } = await serverAuth(req,res);
     const { body } = req.body;
+    const { postId } = req.query;
     
-    const comment = await prisma?.comment.create({
+    const comment = await prisma.comment.create({
       data: {
         body,
         userId: currentUser.id,
         postId
       }
-    })
+    });
 
+    return res.status(200).json(comment);
   } catch (error) {
     console.log(error);
     return res.status(400).end();
