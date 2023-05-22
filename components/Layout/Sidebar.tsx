@@ -41,10 +41,11 @@ const Sidebar = () => {
           {items.map((item) => (
             <SidebarItem
               key={item.href}
-              href={item.href}
-              label={item.label}
-              icon={item.icon}
+              alert={item.alert}
               auth={item.auth}
+              href={item.href} 
+              icon={item.icon} 
+              label={item.label}
             />
           ))}
           { currentUser && (
