@@ -34,6 +34,8 @@ const LoginModal = () => {
         password,
       });
 
+      toast.success('Logged in');
+
       loginModal.onClose();
     } catch (error) {
       toast.error('Something went wrong');

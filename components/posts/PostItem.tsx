@@ -67,13 +67,13 @@ const PostItem: React.FC<PostItemProps> = ({ data = {}, userId }) => {
         <div>
           <div className="flex flex-row items-center gap-2">
             <p 
-              onClick={goToUser} 
+              onClick={() => goToUser} 
               className="text-white font-semibold cursor-pointer hover:underline"
             >
               {data.user.name}
             </p>
             <span 
-              onClick={goToUser} 
+              onClick={() => goToUser} 
               className="text-neutral-500 cursor-pointer hover:underline hidden md:block"
             >
               @{data.user.username}
